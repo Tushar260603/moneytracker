@@ -10,12 +10,15 @@ const PORT = process.env.PORT
 
 //middlewares
 app.use(express.json())
-app.use(cors())
-
+app.use(cors({
+    origin:"http://localhost:3001",
+    methods:["GET","POST","PUT","DELETE"],
+  }))
+  app.use(express.static(path.join(__dirname,"./client/build")))
 //routes
 readdirSync('./routes').map((route) => app.use('/api/v1', require('./routes/' + route)))
 
-app.use(express.static(path.join(__dirname,"./client/build")))
+
 
 app.get("*",function(req,res){
     res.sendFile(path.join(__dirname,"./client/build/index.html"))
